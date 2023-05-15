@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class mathMethodBehaviour : MonoBehaviour
 {
-       
+    //Baba korv
 }
