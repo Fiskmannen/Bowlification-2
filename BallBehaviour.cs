@@ -43,7 +43,7 @@ public class BallBehaviour : MonoBehaviour
                 thrown = true;
                 GetComponent<Rigidbody>().isKinematic = false;
                 GetComponent<Animator>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().AddForce(0, 0, UI.GetComponent<UIBehaviour>().forceSum * 35);
+                gameObject.GetComponent<Rigidbody>().AddForce(0, 0, UI.GetComponent<UIBehaviour>().forceSum / 4, ForceMode.VelocityChange);
             }
         }
     }

@@ -36,6 +36,8 @@ public class UIBehaviour : MonoBehaviour
     public int player3Ball;
     public int player4Ball;
     public int shotMenuStage;
+    public Button bowlButtonUI;
+    public Button previewButton;
     
     // Start is called before the first frame update
     void Start()
@@ -48,7 +50,33 @@ public class UIBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (selectedAim == true)
+        {
+            if(selectedCurve == true)
+            {
+                if(selectedForce == true)
+                {
+                    //Aktivera preview och bowl
+                    bowlButtonUI.interactable = true;
+                    previewButton.interactable = true;
+                }
+                else
+                {
+                    bowlButtonUI.interactable = false;
+                    previewButton.interactable = false;
+                }
+            }
+            else
+            {
+                bowlButtonUI.interactable = false;
+                previewButton.interactable = false;
+            }
+        }
+        else
+        {
+            bowlButtonUI.interactable = false;
+            previewButton.interactable = false;
+        }
     }
     public void initNextButton()
     {
@@ -257,6 +285,8 @@ public class UIBehaviour : MonoBehaviour
     bool aimOpen;
     bool curveOpen;
     bool forceOpen;
+    public Button nextButton;
+    public Button previousButton;
     public void updateShotMenu()
     {
         if (shotMenuStage == 1)
@@ -269,6 +299,8 @@ public class UIBehaviour : MonoBehaviour
                 curveMenu.GetComponent<Animator>().SetTrigger("Curve Out");
                 curveOpen = false;
             }
+            nextButton.interactable = true;
+            previousButton.interactable = false;
         }
         if (shotMenuStage == 2)
         {
@@ -285,6 +317,8 @@ public class UIBehaviour : MonoBehaviour
                 forceMenu.GetComponent<Animator>().SetTrigger("Force Out");
                 forceOpen = false;
             }
+            nextButton.interactable = true;
+            previousButton.interactable = true;
         }
         if (shotMenuStage == 3)
         {
@@ -296,6 +330,8 @@ public class UIBehaviour : MonoBehaviour
                 curveMenu.GetComponent<Animator>().SetTrigger("Curve Out");
                 curveOpen = false;
             }
+            nextButton.interactable = false;
+            previousButton.interactable = true;
         }
     }
     public void closeShotMenu()
@@ -324,9 +360,9 @@ public class UIBehaviour : MonoBehaviour
     public Text aimSumText;
     public Text curveSumText;
     public Text forceSumText;
+    public bool selectedAim;
     public void aimAdditionTicked(bool toggled)
     {
-        
         aimSum = gameManager.GetComponent<gameManagementScript>().rand11 + gameManager.GetComponent<gameManagementScript>().rand12;
         aimSumText.text = "= " + aimSum.ToString();
         if (toggled == true)
@@ -337,6 +373,7 @@ public class UIBehaviour : MonoBehaviour
             aimDivision.interactable = false;
             aimInvert.interactable = true;
             aimSumText.fontSize = 150;
+            selectedAim = true;
         }
         else
         {
@@ -348,6 +385,7 @@ public class UIBehaviour : MonoBehaviour
             aimInvert.isOn = false;  
             aimSumText.text = "select method";
             aimSumText.fontSize = 75;
+            selectedAim = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -363,6 +401,7 @@ public class UIBehaviour : MonoBehaviour
             aimDivision.interactable = false;
             aimInvert.interactable = true;
             aimSumText.fontSize = 150;
+            selectedAim = true;
         }
         else
         {
@@ -373,6 +412,7 @@ public class UIBehaviour : MonoBehaviour
             aimInvert.interactable = false; aimInvert.isOn = false;
             aimSumText.text = "select method";
             aimSumText.fontSize = 75;
+            selectedAim = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -388,6 +428,7 @@ public class UIBehaviour : MonoBehaviour
             aimDivision.interactable = false;
             aimInvert.interactable = true;
             aimSumText.fontSize = 150;
+            selectedAim = true;
         }
         else
         {
@@ -398,6 +439,7 @@ public class UIBehaviour : MonoBehaviour
             aimInvert.interactable = false; aimInvert.isOn = false;
             aimSumText.text = "select method";
             aimSumText.fontSize = 75;
+            selectedAim = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -413,6 +455,7 @@ public class UIBehaviour : MonoBehaviour
             aimDivision.interactable = true;
             aimInvert.interactable = true;
             aimSumText.fontSize = 150;
+            selectedAim = true;
         }
         else
         {
@@ -423,9 +466,11 @@ public class UIBehaviour : MonoBehaviour
             aimInvert.interactable = false; aimInvert.isOn = false;
             aimSumText.text = "select method";
             aimSumText.fontSize = 75;
+            selectedAim = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
+    public bool selectedCurve;
     public void curveAdditionTicked(bool toggled)
     {
         curveSum = gameManager.GetComponent<gameManagementScript>().rand21 + gameManager.GetComponent<gameManagementScript>().rand22;
@@ -438,6 +483,7 @@ public class UIBehaviour : MonoBehaviour
             curveDivision.interactable = false;
             curveInvert.interactable = true;
             curveSumText.fontSize = 150;
+            selectedCurve = true;
         }
         else
         {
@@ -448,6 +494,7 @@ public class UIBehaviour : MonoBehaviour
             curveInvert.interactable = false; curveInvert.isOn = false;
             curveSumText.text = "select method";
             curveSumText.fontSize = 75;
+            selectedCurve = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -463,6 +510,7 @@ public class UIBehaviour : MonoBehaviour
             curveDivision.interactable = false;
             curveInvert.interactable = true;
             curveSumText.fontSize = 150;
+            selectedCurve = true;
         }
         else
         {
@@ -473,6 +521,7 @@ public class UIBehaviour : MonoBehaviour
             curveInvert.interactable = false; curveInvert.isOn = false;
             curveSumText.text = "select method";
             curveSumText.fontSize = 75;
+            selectedCurve = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -488,6 +537,7 @@ public class UIBehaviour : MonoBehaviour
             curveDivision.interactable = false;
             curveInvert.interactable = true;
             curveSumText.fontSize = 150;
+            selectedCurve = true;
         }
         else
         {
@@ -498,6 +548,7 @@ public class UIBehaviour : MonoBehaviour
             curveInvert.interactable = false; curveInvert.isOn = false;
             curveSumText.text = "select method";
             curveSumText.fontSize = 75;
+            selectedCurve = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
@@ -513,6 +564,7 @@ public class UIBehaviour : MonoBehaviour
             curveDivision.interactable = true;
             curveInvert.interactable = true;
             curveSumText.fontSize = 150;
+            selectedCurve = true;
         }
         else
         {
@@ -523,9 +575,11 @@ public class UIBehaviour : MonoBehaviour
             curveInvert.interactable = false; curveInvert.isOn = false;
             curveSumText.text = "select method";
             curveSumText.fontSize = 75;
+            selectedCurve = false;
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
+    public bool selectedForce;
     public void forceAdditionTicked(bool toggled)
     {
         forceSum = gameManager.GetComponent<gameManagementScript>().rand31 + gameManager.GetComponent<gameManagementScript>().rand32;
@@ -537,6 +591,7 @@ public class UIBehaviour : MonoBehaviour
             forceMultiplication.interactable = false;
             forceDivision.interactable = false;
             forceSumText.fontSize = 150;
+            selectedForce = true;
         }
         else
         {
@@ -546,6 +601,7 @@ public class UIBehaviour : MonoBehaviour
             forceDivision.interactable = true;
             forceSumText.text = "select method";
             forceSumText.fontSize = 75;
+            selectedForce = false;
         }
         forceChecker();
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
@@ -561,6 +617,7 @@ public class UIBehaviour : MonoBehaviour
             forceMultiplication.interactable = false;
             forceDivision.interactable = false;
             forceSumText.fontSize = 150;
+            selectedForce = true;
         }
         else
         {
@@ -570,6 +627,7 @@ public class UIBehaviour : MonoBehaviour
             forceDivision.interactable = true;
             forceSumText.text = "select method";
             forceSumText.fontSize = 75;
+            selectedForce = false;
         }
         forceChecker();
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
@@ -585,14 +643,17 @@ public class UIBehaviour : MonoBehaviour
             forceMultiplication.interactable = true;
             forceDivision.interactable = false;
             forceSumText.fontSize = 150;
+            selectedForce = true;
         }
         else
         {
             forceAddition.interactable = true;
             forceSubtraction.interactable = true;
             forceMultiplication.interactable = true;
+            forceDivision.interactable = true;
             forceSumText.text = "select method";
             forceSumText.fontSize = 75;
+            selectedForce = false;
         }
         forceChecker();
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
@@ -608,6 +669,7 @@ public class UIBehaviour : MonoBehaviour
             forceMultiplication.interactable = false;
             forceDivision.interactable = true;
             forceSumText.fontSize = 150;
+            selectedForce = true;
         }
         else
         {
@@ -617,6 +679,7 @@ public class UIBehaviour : MonoBehaviour
             forceDivision.interactable = true;
             forceSumText.text = "select method";
             forceSumText.fontSize = 75;
+            selectedForce = false;
         }
         forceChecker();
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();

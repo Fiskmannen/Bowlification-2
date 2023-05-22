@@ -17,7 +17,10 @@ public class ReturnBallHL : MonoBehaviour
             {
                 if (other.gameObject.GetComponent<BallBehaviour>().Selected == false)
                 {
-                    other.gameObject.GetComponent<BallBehaviour>().returnBall();
+                    if (other.GetComponent<BallBehaviour>().Active == false)
+                    {
+                        other.gameObject.GetComponent<BallBehaviour>().returnBall();
+                    }
                 }
             }
         }
