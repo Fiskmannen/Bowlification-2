@@ -43,10 +43,12 @@ public class gameManagementScript : MonoBehaviour
     public int p2SelectedBall;
     public int p3SelectedBall;
     public int p4SelectedBall;
+    public GameObject monitorUI;
+    public GameObject followCamera;
     void Start()
     {
         currentBallID = 0;
-        playerAmount = 1;
+        playerAmount = 2;
         round = 0;
         turn = 0;
     }
@@ -105,20 +107,43 @@ public class gameManagementScript : MonoBehaviour
 
         highlightBlock.GetComponent<BoxCollider>().enabled = true;
     }
-    
+    public bool spareShot;
+    public int fallenPins;
+
     //######## Spelets Gång ########
     public void initializeNextTurn()
     {
-        previewsLeft = 2;
+        mainCamera.SetActive(true);
+        followCamera.SetActive(false);
+        previewsLeft = 1;
         mainCamera.GetComponent<Animator>().SetTrigger("Standard Shot");
-        turn++;
-        kastmenyIn();
-        rand11 = Random.Range(1, 10); rand11text.text = rand11.ToString();
-        rand12 = Random.Range(1, 10); rand12text.text = rand12.ToString();
+        if (fallenPins == 10) //Strike!
+        {
+            turn++;
+        }
+        else
+        {
+            if (spareShot == true) //Spare över
+            {
+                spareShot = false;
+                turn++;
+            }
+            else //Nästa blir spare
+            { 
+                spareShot = true;
+            }
+            //Maksin som plockar upp när push bar sveper känner av vilka som står upp, fallenpins är från början 10, för varje kägla som kolliderar med plocka upp saken subtrakeras ett från fallenpins
+        }
+
+        turn++; //ska tas bort när ovanstående fungerar
+        StartCoroutine(kastMenyInTimer());
+        rand11 = Random.Range(5, 10); rand11text.text = rand11.ToString();
+        rand12 = Random.Range(5, 10); rand12text.text = rand12.ToString();
         rand21 = Random.Range(1, 10); rand21text.text = rand21.ToString();
         rand22 = Random.Range(1, 10); rand22text.text = rand22.ToString();
-        rand31 = Random.Range(3, 10); rand31text.text = rand31.ToString();
+        rand31 = Random.Range(3, 5); rand31text.text = rand31.ToString();
         rand32 = Random.Range(3, 10); rand32text.text = rand32.ToString();
+        monitorUI.SetActive(true);
 
         //##### Vem kastar? #####
         if (turn == 1)//Spelare 1 kastar 
@@ -144,7 +169,6 @@ public class gameManagementScript : MonoBehaviour
                 pinkBall.GetComponent<BallBehaviour>().Active = true;
             }
             nameBanner.GetComponentInChildren<Text>().text = player1Name + "'S TURN!";
-            nameBanner.GetComponent<Animator>().SetTrigger("Show Name");
         }
         if (turn == 2)//Spelare 2 kastar 
         {
@@ -169,7 +193,6 @@ public class gameManagementScript : MonoBehaviour
                 pinkBall.GetComponent<BallBehaviour>().Active = true;
             }
             nameBanner.GetComponentInChildren<Text>().text = player2Name + "'S TURN!";
-            nameBanner.GetComponent<Animator>().SetTrigger("Show Name");
         }
         if (turn == 3)//Spelare 3 kastar 
         {
@@ -194,7 +217,6 @@ public class gameManagementScript : MonoBehaviour
                 pinkBall.GetComponent<BallBehaviour>().Active = true;
             }
             nameBanner.GetComponentInChildren<Text>().text = player3Name + "'S TURN!";
-            nameBanner.GetComponent<Animator>().SetTrigger("Show Name");
         }
         if (turn == 4)//Spelare 4 kastar 
         {
@@ -219,7 +241,6 @@ public class gameManagementScript : MonoBehaviour
                 pinkBall.GetComponent<BallBehaviour>().Active = true;
             }
             nameBanner.GetComponentInChildren<Text>().text = player4Name + "'S TURN!";
-            nameBanner.GetComponent<Animator>().SetTrigger("Show Name");
         }
         if (turn == playerAmount + 1) //Rundan över
         {
@@ -296,11 +317,56 @@ public class gameManagementScript : MonoBehaviour
     {
         //Aim
         Vector3 desiredPosition;
-        desiredPosition.x = 1.36f + (UI.GetComponent<UIBehaviour>().aimSum) / 80;
+        desiredPosition.x = 1.36f + (UI.GetComponent<UIBehaviour>().aimSum) / 70;
         desiredPosition.y = 1.996f;
         desiredPosition.z = -18.13f;
         throwAnchor.transform.position = desiredPosition;
         //Stretch shot anchor and arrow according to strength
 
+    }
+    IEnumerator kastMenyInTimer()
+    {
+        yield return new WaitForSeconds(5);
+
+        nameBanner.GetComponent<Animator>().SetTrigger("Show Name");
+
+        yield return new WaitForSeconds(3);
+
+        kastmenyIn();
+    }
+    public GameObject pin0;
+    public GameObject pin1;
+    public GameObject pin2;
+    public GameObject pin3;
+    public GameObject pin4;
+    public GameObject pin5;
+    public GameObject pin6;
+    public GameObject pin7;
+    public GameObject pin8;
+    public GameObject pin9;
+    public void afterShotTimer()
+    {
+        StartCoroutine(afterShot());
+    }
+    IEnumerator afterShot()
+    {
+        yield return new WaitForSeconds(8);
+
+        //Pincounter moves down
+
+        //Lift pins
+        //pin0.GetComponent<PinBehaviour>().resetStandingPins();
+        
+
+        yield return new WaitForSeconds(3);
+
+        //Present fallen pins
+        //Pushbar
+        //Fade to black
+
+        yield return new WaitForSeconds(1);
+
+        //Fade out
+        //Normal camera
     }
 }

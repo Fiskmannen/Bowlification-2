@@ -43,7 +43,7 @@ public class BallBehaviour : MonoBehaviour
                 thrown = true;
                 GetComponent<Rigidbody>().isKinematic = false;
                 GetComponent<Animator>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().AddForce(0, 0, UI.GetComponent<UIBehaviour>().forceSum / 4, ForceMode.VelocityChange);
+                gameObject.GetComponent<Rigidbody>().AddForce(0, 0, UI.GetComponent<UIBehaviour>().forceSum / 4.5f, ForceMode.VelocityChange);
             }
         }
     }
@@ -65,7 +65,7 @@ public class BallBehaviour : MonoBehaviour
         {
             if (allowCurve == true)
             {
-                gameObject.GetComponent<Rigidbody>().AddForce((UI.GetComponent<UIBehaviour>().curveSum * 2) * Time.deltaTime, 0, 0);
+                gameObject.GetComponent<Rigidbody>().AddForce((UI.GetComponent<UIBehaviour>().curveSum * 5) * Time.deltaTime, 0, 0);
             }
         }
     }

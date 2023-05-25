@@ -38,6 +38,10 @@ public class UIBehaviour : MonoBehaviour
     public int shotMenuStage;
     public Button bowlButtonUI;
     public Button previewButton;
+    public GameObject monitorRow1;
+    public GameObject monitorRow2;
+    public GameObject monitorRow3;
+    public GameObject monitorRow4;
     
     // Start is called before the first frame update
     void Start()
@@ -93,6 +97,10 @@ public class UIBehaviour : MonoBehaviour
                 player2NameObj.SetActive(false);
                 player3NameObj.SetActive(false);
                 player4NameObj.SetActive(false);
+                monitorRow1.SetActive(true);
+                monitorRow2.SetActive(false);
+                monitorRow3.SetActive(false);
+                monitorRow4.SetActive(false);
             }
             if (gameManager.GetComponent<gameManagementScript>().playerAmount == 2)
             {
@@ -100,6 +108,10 @@ public class UIBehaviour : MonoBehaviour
                 player2NameObj.SetActive(true);
                 player3NameObj.SetActive(false);
                 player4NameObj.SetActive(false);
+                monitorRow1.SetActive(true);
+                monitorRow2.SetActive(true);
+                monitorRow3.SetActive(false);
+                monitorRow4.SetActive(false);
             }
             if (gameManager.GetComponent<gameManagementScript>().playerAmount == 3)
             {
@@ -107,6 +119,10 @@ public class UIBehaviour : MonoBehaviour
                 player2NameObj.SetActive(true);
                 player3NameObj.SetActive(true);
                 player4NameObj.SetActive(false);
+                monitorRow1.SetActive(true);
+                monitorRow2.SetActive(true);
+                monitorRow3.SetActive(true);
+                monitorRow4.SetActive(false);
             }
             if (gameManager.GetComponent<gameManagementScript>().playerAmount == 4)
             {
@@ -114,6 +130,10 @@ public class UIBehaviour : MonoBehaviour
                 player2NameObj.SetActive(true);
                 player3NameObj.SetActive(true);
                 player4NameObj.SetActive(true);
+                monitorRow1.SetActive(true);
+                monitorRow2.SetActive(true);
+                monitorRow3.SetActive(true);
+                monitorRow4.SetActive(true);
             }
         }
         if (initStage == 3) //Välj spelare 1 klot och ball selector in
@@ -228,11 +248,6 @@ public class UIBehaviour : MonoBehaviour
     }
     void updateUI()
     {
-        if (gameManager.GetComponent<gameManagementScript>().playerAmount == 1) 
-        {
-            playeramountMinus.interactable = false; 
-            playeramountPlus.interactable = true;
-        }
         if (gameManager.GetComponent<gameManagementScript>().playerAmount == 4)
         {
             playeramountMinus.interactable = true;
@@ -240,7 +255,7 @@ public class UIBehaviour : MonoBehaviour
         }
         if (gameManager.GetComponent<gameManagementScript>().playerAmount == 2)
         {
-            playeramountMinus.interactable = true;
+            playeramountMinus.interactable = false;
             playeramountPlus.interactable = true;
         }
         if (gameManager.GetComponent<gameManagementScript>().playerAmount == 3)
@@ -250,25 +265,33 @@ public class UIBehaviour : MonoBehaviour
         }
         playerAmountDisplay.text = gameManager.GetComponent<gameManagementScript>().playerAmount.ToString();
     }
+    public Text monitorName1;
+    public Text monitorName2;
+    public Text monitorName3;
+    public Text monitorName4;
     public void ReadPlayer1Name(string s)
     {
         s = s.ToUpper();
         gameManager.GetComponent<gameManagementScript>().player1Name = s;
+        monitorName1.text = s;
     }
     public void ReadPlayer2Name(string s)
     {
         s = s.ToUpper();
         gameManager.GetComponent<gameManagementScript>().player2Name = s;
+        monitorName2.text = s;
     }
     public void ReadPlayer3Name(string s)
     {
         s = s.ToUpper();
         gameManager.GetComponent<gameManagementScript>().player3Name = s;
+        monitorName3.text = s;
     }
     public void ReadPlayer4Name(string s)
     {
         s = s.ToUpper();
         gameManager.GetComponent<gameManagementScript>().player4Name = s;
+        monitorName4.text = s;
     }
     
     //##### Shot Menu #####
@@ -705,11 +728,17 @@ public class UIBehaviour : MonoBehaviour
         }
         gameManager.GetComponent<gameManagementScript>().updateShotAnchor();
     }
+    public GameObject followCamera;
+    public bool ongoingShot;
     public void bowlButton()
     {
         redBall.GetComponent<BallBehaviour>().bowl();
         orangeBall.GetComponent<BallBehaviour>().bowl();
         blueBall.GetComponent<BallBehaviour>().bowl();
         pinkBall.GetComponent<BallBehaviour>().bowl();
+        //Kamera
+        mainCamera.SetActive(false); followCamera.SetActive(true);
+        ongoingShot = true;
     }
+    
 }
