@@ -49,7 +49,7 @@ public class gameManagementScript : MonoBehaviour
     {
         currentBallID = 0;
         playerAmount = 2;
-        round = 0;
+        round = 1;
         turn = 0;
     }
     private void Update()
@@ -110,39 +110,71 @@ public class gameManagementScript : MonoBehaviour
     public bool spareShot;
     public int fallenPins;
 
-    //######## Spelets Gång ########
+    //###################################################### Spelets Gång ############################################################
     public void initializeNextTurn()
     {
+        redBall.GetComponent<BallBehaviour>().Active = false;
+        orangeBall.GetComponent<BallBehaviour>().Active = false;
+        blueBall.GetComponent<BallBehaviour>().Active = false;
+        pinkBall.GetComponent<BallBehaviour>().Active = false;
         mainCamera.SetActive(true);
         followCamera.SetActive(false);
         previewsLeft = 1;
         mainCamera.GetComponent<Animator>().SetTrigger("Standard Shot");
-        if (fallenPins == 10) //Strike!
+
+        if (turn >= 1)
+        {
+            if (spareShot == false)
+            {
+                if (fallenPins == 10) //Strike!
+                {
+                    turn++;
+                    fallenPins = 10;
+                    spareShot = false;
+                    StartCoroutine(resetAlley());
+                }
+                else //spare
+                {
+                    spareShot = true;
+                    fallenPins = 10;
+                    //Starta om som spare
+                }
+            }
+            else //Kastat spare
+            {
+                turn++;
+                StartCoroutine(resetAlley());
+                spareShot = false;
+            }
+        }
+        if (turn == 0)
         {
             turn++;
+            fallenPins = 10;
+            Debug.Log("Starting new round!");
         }
-        else
-        {
-            if (spareShot == true) //Spare över
-            {
-                spareShot = false;
-                turn++;
-            }
-            else //Nästa blir spare
-            { 
-                spareShot = true;
-            }
-            //Maksin som plockar upp när push bar sveper känner av vilka som står upp, fallenpins är från början 10, för varje kägla som kolliderar med plocka upp saken subtrakeras ett från fallenpins
-        }
-
-        turn++; //ska tas bort när ovanstående fungerar
-        StartCoroutine(kastMenyInTimer());
-        rand11 = Random.Range(5, 10); rand11text.text = rand11.ToString();
-        rand12 = Random.Range(5, 10); rand12text.text = rand12.ToString();
+        
+        rand11 = Random.Range(4, 10); rand11text.text = rand11.ToString();
+        rand12 = Random.Range(4, 10); rand12text.text = rand12.ToString();
         rand21 = Random.Range(1, 10); rand21text.text = rand21.ToString();
         rand22 = Random.Range(1, 10); rand22text.text = rand22.ToString();
-        rand31 = Random.Range(3, 5); rand31text.text = rand31.ToString();
-        rand32 = Random.Range(3, 10); rand32text.text = rand32.ToString();
+        rand31 = Random.Range(4, 10); rand31text.text = rand31.ToString();
+        rand32 = Random.Range(4, 10); rand32text.text = rand32.ToString();
+        UI.GetComponent<UIBehaviour>().shotMenuStage = 1;
+        UI.GetComponent<UIBehaviour>().aimAddition.isOn = false; UI.GetComponent<UIBehaviour>().aimAddition.interactable = true;
+        UI.GetComponent<UIBehaviour>().aimSubtraction.isOn = false; UI.GetComponent<UIBehaviour>().aimSubtraction.interactable = true;
+        UI.GetComponent<UIBehaviour>().aimDivision.isOn = false; UI.GetComponent<UIBehaviour>().aimDivision.interactable = true;
+        UI.GetComponent<UIBehaviour>().aimMultiplication.isOn = false; UI.GetComponent<UIBehaviour>().aimMultiplication.interactable = true;
+        UI.GetComponent<UIBehaviour>().curveAddition.isOn = false; UI.GetComponent<UIBehaviour>().curveAddition.interactable = true;
+        UI.GetComponent<UIBehaviour>().curveSubtraction.isOn = false; UI.GetComponent<UIBehaviour>().curveSubtraction.interactable = true;
+        UI.GetComponent<UIBehaviour>().curveDivision.isOn = false; UI.GetComponent<UIBehaviour>().curveDivision.interactable = true;
+        UI.GetComponent<UIBehaviour>().curveMultiplication.isOn = false; UI.GetComponent<UIBehaviour>().curveMultiplication.interactable = true;
+        UI.GetComponent<UIBehaviour>().forceAddition.isOn = false; UI.GetComponent<UIBehaviour>().forceAddition.interactable = true;
+        UI.GetComponent<UIBehaviour>().forceSubtraction.isOn = false; UI.GetComponent<UIBehaviour>().forceSubtraction.interactable = true;
+        UI.GetComponent<UIBehaviour>().forceDivision.isOn = false; UI.GetComponent<UIBehaviour>().forceDivision.interactable = true;
+        UI.GetComponent<UIBehaviour>().forceMultiplication.isOn = false; UI.GetComponent<UIBehaviour>().forceMultiplication.interactable = true;
+        Debug.Log("Generating new Numbers");
+        Debug.Log(rand11 + " " + rand12 + " " + rand21 + " " + rand22 + " " + rand31 + " " + rand32);
         monitorUI.SetActive(true);
 
         //##### Vem kastar? #####
@@ -242,19 +274,47 @@ public class gameManagementScript : MonoBehaviour
             }
             nameBanner.GetComponentInChildren<Text>().text = player4Name + "'S TURN!";
         }
+        if (redBall.GetComponent<BallBehaviour>().Active == true) 
+        { 
+            redBall.GetComponent<BallBehaviour>().thrown = false;
+            redBall.GetComponent<BallBehaviour>().allowCurve = false;
+        }
+        if (orangeBall.GetComponent<BallBehaviour>().Active == true)
+        {
+            orangeBall.GetComponent<BallBehaviour>().thrown = false;
+            orangeBall.GetComponent<BallBehaviour>().allowCurve = false;
+        }
+        if (blueBall.GetComponent<BallBehaviour>().Active == true)
+        {
+            blueBall.GetComponent<BallBehaviour>().thrown = false;
+            blueBall.GetComponent<BallBehaviour>().allowCurve = false;
+        }
+        if (pinkBall.GetComponent<BallBehaviour>().Active == true)
+        {
+            pinkBall.GetComponent<BallBehaviour>().thrown = false;
+            pinkBall.GetComponent<BallBehaviour>().allowCurve = false;
+        }
         if (turn == playerAmount + 1) //Rundan över
         {
-            if (round == 4)
-            {
-                //Avsluta
-            }
-            else
+            redBall.GetComponent<BallBehaviour>().returnBall();
+            if(round != 5)
             {
                 //Ny runda
+                fallenPins = 10;
                 round++;
                 turn = 0;
                 initializeNextTurn();
+                
             }
+            if (round == 5)
+            {
+                Debug.Log("Ending Game");
+            }
+            
+        }
+        if (round != 5)
+        {
+            StartCoroutine(kastMenyInTimer()); //??
         }
         //Deactivate physics of active ball
         if (redBall.GetComponent<BallBehaviour>().Active == true) 
@@ -295,17 +355,17 @@ public class gameManagementScript : MonoBehaviour
         {
             redBall.GetComponent<BallBehaviour>().filterSelected();
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (orangeBall.GetComponent<BallBehaviour>().Active == false)
         {
             orangeBall.GetComponent<BallBehaviour>().filterSelected();
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (blueBall.GetComponent<BallBehaviour>().Active == false)
         {
             blueBall.GetComponent<BallBehaviour>().filterSelected();
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (pinkBall.GetComponent<BallBehaviour>().Active == false)
         {
             pinkBall.GetComponent<BallBehaviour>().filterSelected();
@@ -324,6 +384,9 @@ public class gameManagementScript : MonoBehaviour
         //Stretch shot anchor and arrow according to strength
 
     }
+    public GameObject aimMenu;
+    public GameObject curveMenu;
+    public GameObject forceMenu;
     IEnumerator kastMenyInTimer()
     {
         yield return new WaitForSeconds(5);
@@ -332,6 +395,13 @@ public class gameManagementScript : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
+        UI.GetComponent<UIBehaviour>().aimOpen = true;
+        UI.GetComponent<UIBehaviour>().curveOpen = false;
+        UI.GetComponent<UIBehaviour>().forceOpen = false;
+        aimMenu.GetComponent<Animator>().SetTrigger("Aim In");
+        curveMenu.GetComponent<Animator>().SetTrigger("Curve Out");
+        forceMenu.GetComponent<Animator>().SetTrigger("Force Out");
+        UI.GetComponent<UIBehaviour>().updateShotMenu();
         kastmenyIn();
     }
     public GameObject pin0;
@@ -344,6 +414,18 @@ public class gameManagementScript : MonoBehaviour
     public GameObject pin7;
     public GameObject pin8;
     public GameObject pin9;
+    public GameObject plate0;
+    public GameObject plate1;
+    public GameObject plate2;
+    public GameObject plate3;
+    public GameObject plate4;
+    public GameObject plate5;
+    public GameObject plate6;
+    public GameObject plate7;
+    public GameObject plate8;
+    public GameObject plate9;
+    public GameObject liftPlate;
+    public GameObject pushBar;
     public void afterShotTimer()
     {
         StartCoroutine(afterShot());
@@ -352,21 +434,103 @@ public class gameManagementScript : MonoBehaviour
     {
         yield return new WaitForSeconds(8);
 
-        //Pincounter moves down
+        pushBar.GetComponent<Animator>().SetTrigger("Push Bar Clear");
 
-        //Lift pins
-        //pin0.GetComponent<PinBehaviour>().resetStandingPins();
-        
+        liftPlate.GetComponent<Animator>().SetTrigger("Lift Pins");
+
+        yield return new WaitForSeconds(1);
+
+        if (pin0.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate0.SetActive(false);
+        }
+        if (pin1.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate1.SetActive(false);
+        }
+        if (pin2.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate2.SetActive(false);
+        }
+        if (pin3.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate3.SetActive(false);
+        }
+        if (pin4.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate4.SetActive(false);
+        }
+        if (pin5.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate5.SetActive(false);
+        }
+        if (pin6.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate6.SetActive(false);
+        }
+        if (pin7.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate7.SetActive(false);
+        }
+        if (pin8.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate8.SetActive(false);
+        }
+        if (pin9.GetComponent<PinBehaviour>().standing == false)
+        {
+            plate9.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(4);
+
+        Debug.Log("Score: " + fallenPins.ToString());
+        UI.GetComponent<UIBehaviour>().updateScoreboard();
 
         yield return new WaitForSeconds(3);
 
-        //Present fallen pins
-        //Pushbar
         //Fade to black
 
         yield return new WaitForSeconds(1);
 
-        //Fade out
-        //Normal camera
+        initializeNextTurn();
+        //Fade in
+        mainCamera.GetComponent<Animator>().SetTrigger("Standard Shot");
+
+        yield return new WaitForSeconds(2);
+
+        ballReturner.GetComponent<Animator>().SetTrigger("Find Balls");
+    }
+    public GameObject ballReturner;
+    
+    IEnumerator resetAlley()
+    {
+        yield return new WaitForSeconds(3);
+        liftPlate.GetComponent<Animator>().SetTrigger("Reload");
+        yield return new WaitForSeconds(1);
+        pin0.GetComponent<PinBehaviour>().resetToOrigin();
+        pin1.GetComponent<PinBehaviour>().resetToOrigin();
+        pin2.GetComponent<PinBehaviour>().resetToOrigin();
+        pin3.GetComponent<PinBehaviour>().resetToOrigin();
+        pin4.GetComponent<PinBehaviour>().resetToOrigin();
+        pin5.GetComponent<PinBehaviour>().resetToOrigin();
+        pin6.GetComponent<PinBehaviour>().resetToOrigin();
+        pin7.GetComponent<PinBehaviour>().resetToOrigin();
+        pin8.GetComponent<PinBehaviour>().resetToOrigin();
+        pin9.GetComponent<PinBehaviour>().resetToOrigin();
+        liftPlate.GetComponent<BoxCollider>().enabled = false;
+        
+        yield return new WaitForSeconds(2);
+        liftPlate.GetComponent<BoxCollider>().enabled = true;
+
+        plate0.SetActive(true);
+        plate1.SetActive(true);
+        plate2.SetActive(true);
+        plate3.SetActive(true);
+        plate4.SetActive(true);
+        plate5.SetActive(true);
+        plate6.SetActive(true);
+        plate7.SetActive(true);
+        plate8.SetActive(true);
+        plate9.SetActive(true);
     }
 }

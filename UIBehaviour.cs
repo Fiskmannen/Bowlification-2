@@ -305,9 +305,9 @@ public class UIBehaviour : MonoBehaviour
         shotMenuStage--;
         updateShotMenu();
     }
-    bool aimOpen;
-    bool curveOpen;
-    bool forceOpen;
+    public bool aimOpen;
+    public bool curveOpen;
+    public bool forceOpen;
     public Button nextButton;
     public Button previousButton;
     public void updateShotMenu()
@@ -730,6 +730,7 @@ public class UIBehaviour : MonoBehaviour
     }
     public GameObject followCamera;
     public bool ongoingShot;
+    public BoxCollider rollbackBlock;
     public void bowlButton()
     {
         redBall.GetComponent<BallBehaviour>().bowl();
@@ -739,6 +740,156 @@ public class UIBehaviour : MonoBehaviour
         //Kamera
         mainCamera.SetActive(false); followCamera.SetActive(true);
         ongoingShot = true;
+        rollbackBlock.enabled = false;
+        closeShotMenu();
     }
+    public Text player1Score1;
+    public Text player1Score2;
+    public Text player1Score3;
+    public Text player1Score4;
+    public Text player2Score1;
+    public Text player2Score2;
+    public Text player2Score3;
+    public Text player2Score4;
+    public Text player3Score1;
+    public Text player3Score2;
+    public Text player3Score3;
+    public Text player3Score4;
+    public Text player4Score1;
+    public Text player4Score2;
+    public Text player4Score3;
+    public Text player4Score4;
+    public Text player1totalText;
+    public Text player2totalText;
+    public Text player3totalText;
+    public Text player4totalText;
+    public int p1r1;
+    public int p1r2;
+    public int p1r3;
+    public int p1r4;
+    public int p2r1;
+    public int p2r2;
+    public int p2r3;
+    public int p2r4;
+    public int p3r1;
+    public int p3r2;
+    public int p3r3;
+    public int p3r4;
+    public int p4r1;
+    public int p4r2;
+    public int p4r3;
+    public int p4r4;
+    public int player1Total;
+    public int player2Total;
+    public int player3Total;
+    public int player4Total;
     
+    public void updateScoreboard()
+    {
+        if (gameManager.GetComponent<gameManagementScript>().round == 1)
+        {
+            if (gameManager.GetComponent<gameManagementScript>().turn == 1)
+            {
+                p1r1 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 2)
+            {
+                p2r1 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 3)
+            {
+                p3r1 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 4)
+            {
+                p4r1 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+        }
+        if (gameManager.GetComponent<gameManagementScript>().round == 2)
+        {
+            if (gameManager.GetComponent<gameManagementScript>().turn == 1)
+            {
+                p1r2 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 2)
+            {
+                p2r2 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 3)
+            {
+                p3r2 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 4)
+            {
+                p4r2 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+        }
+        if (gameManager.GetComponent<gameManagementScript>().round == 3)
+        {
+            if (gameManager.GetComponent<gameManagementScript>().turn == 1)
+            {
+                p1r3 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 2)
+            {
+                p2r3 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 3)
+            {
+                p3r3 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 4)
+            {
+                p4r3 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+        }
+        if (gameManager.GetComponent<gameManagementScript>().round == 4)
+        {
+            if (gameManager.GetComponent<gameManagementScript>().turn == 1)
+            {
+                p1r4 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 2)
+            {
+                p2r4 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 3)
+            {
+                p3r4 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+            if (gameManager.GetComponent<gameManagementScript>().turn == 4)
+            {
+                p4r4 = gameManager.GetComponent<gameManagementScript>().fallenPins;
+            }
+        }
+        player1Total = p1r1 + p1r2 + p1r3 + p1r4;
+        player2Total = p2r1 + p2r2 + p2r3 + p2r4;
+        player3Total = p3r1 + p3r2 + p3r3 + p3r4;
+        player4Total = p4r1 + p4r2 + p4r3 + p4r4;
+        
+        player1Score1.text = p1r1.ToString();
+        player1Score2.text = p1r2.ToString();
+        player1Score3.text = p1r3.ToString();
+        player1Score4.text = p1r4.ToString();
+
+        player2Score1.text = p2r1.ToString();
+        player2Score2.text = p2r2.ToString();
+        player2Score3.text = p2r3.ToString();
+        player2Score4.text = p2r4.ToString();
+
+        player3Score1.text = p3r1.ToString();
+        player3Score2.text = p3r2.ToString();
+        player3Score3.text = p3r3.ToString();
+        player3Score4.text = p3r4.ToString();
+
+        player4Score1.text = p4r1.ToString();
+        player4Score2.text = p4r2.ToString();
+        player4Score3.text = p4r3.ToString();
+        player4Score4.text = p4r4.ToString();
+
+        player1totalText.text = player1Total.ToString();
+        player2totalText.text = player2Total.ToString();
+        player3totalText.text = player3Total.ToString();
+        player4totalText.text = player4Total.ToString();
+    }
 }
