@@ -128,10 +128,12 @@ public class gameManagementScript : MonoBehaviour
             {
                 if (fallenPins == 10) //Strike!
                 {
+                    
                     turn++;
                     fallenPins = 10;
                     spareShot = false;
                     StartCoroutine(resetAlley());
+                    
                 }
                 else //spare
                 {
@@ -333,6 +335,7 @@ public class gameManagementScript : MonoBehaviour
         {
             pinkBall.GetComponent<Rigidbody>().isKinematic = true;
         }
+        UI.GetComponent<UIBehaviour>().strikeBonus();
     }
     void kastmenyIn()
     {

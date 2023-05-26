@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -863,6 +864,7 @@ public class UIBehaviour : MonoBehaviour
                 p4r4 = gameManager.GetComponent<gameManagementScript>().fallenPins;
             }
         }
+    
         player1Total = p1r1 + p1r2 + p1r3 + p1r4;
         player2Total = p2r1 + p2r2 + p2r3 + p2r4;
         player3Total = p3r1 + p3r2 + p3r3 + p3r4;
@@ -892,5 +894,33 @@ public class UIBehaviour : MonoBehaviour
         player2totalText.text = player2Total.ToString();
         player3totalText.text = player3Total.ToString();
         player4totalText.text = player4Total.ToString();
+    }
+    public int p1r1StrikeBonus;
+    public int p1r2StrikeBonus;
+    public int p1r3StrikeBonus;
+    public int p1r4StrikeBonus;
+    public int p2r1StrikeBonus;
+    public int p2r2StrikeBonus;
+    public int p2r3StrikeBonus;
+    public int p2r4StrikeBonus;
+    public int p3r1StrikeBonus;
+    public int p3r2StrikeBonus;
+    public int p3r3StrikeBonus;
+    public int p3r4StrikeBonus;
+    public int p4r1StrikeBonus;
+    public int p4r2StrikeBonus;
+    public int p4r3StrikeBonus;
+    public int p4r4StrikeBonus;
+
+    public void strikeBonus()
+    {
+        if (gameManager.GetComponent<gameManagementScript>().round == 1)
+        {
+            if (gameManager.GetComponent<gameManagementScript>().turn == 1)
+            {
+                p1r1++;
+                p1r1++;
+            }
+        }
     }
 }
