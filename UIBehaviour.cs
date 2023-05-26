@@ -742,6 +742,7 @@ public class UIBehaviour : MonoBehaviour
         ongoingShot = true;
         rollbackBlock.enabled = false;
         closeShotMenu();
+        gameManager.GetComponent<gameManagementScript>().fallenPins = 10;
     }
     public Text player1Score1;
     public Text player1Score2;
